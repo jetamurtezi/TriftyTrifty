@@ -7,9 +7,9 @@ using TriftyTrifty.DataAccess.Models;
 
 namespace TriftyTrifty.DataAccess.Repositories
 {
-    internal interface IExpenseRepository
+    public interface IExpenseRepository
     {
-        IEnumerable<Expense> GetAllExpenses();
+        IEnumerable<Expense> GetAll();
         Expense GetById(int id);
         void Add(Expense expense);
         void Update(Expense expense);
