@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TriftyTrifty.Models;
 
-namespace TriftyTrifty.Data
+using TriftyTrifty.DataAccess.Models;
+
+namespace TriftyTrifty.DataAccess.Data
 {
     public class AppDbContext : DbContext 
     {

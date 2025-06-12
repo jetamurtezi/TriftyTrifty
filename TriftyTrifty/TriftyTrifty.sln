@@ -5,6 +5,8 @@ VisualStudioVersion = 17.14.36203.30 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TriftyTrifty", "TriftyTrifty.csproj", "{8C1E1D6A-3C60-46F8-9B48-E3DD5DDA3CB5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TriftyTrifty.DataAccess", "..\TriftyTrifty.DataAccess\TriftyTrifty.DataAccess.csproj", "{F037906B-2AEE-4738-920A-512233929B01}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{8C1E1D6A-3C60-46F8-9B48-E3DD5DDA3CB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C1E1D6A-3C60-46F8-9B48-E3DD5DDA3CB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C1E1D6A-3C60-46F8-9B48-E3DD5DDA3CB5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F037906B-2AEE-4738-920A-512233929B01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F037906B-2AEE-4738-920A-512233929B01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F037906B-2AEE-4738-920A-512233929B01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F037906B-2AEE-4738-920A-512233929B01}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

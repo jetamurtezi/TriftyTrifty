@@ -1,0 +1,33 @@
+﻿@model TriftyTrifty.DataAccess.Models.Expense
+
+<h2>@(Model.Id != 0 ? "Ndrysho Shpenzim" : "Shto Shpenzim")</h2>
+
+<form asp-action="Save" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group">
+        <label asp-for="Amount">Shuma</label>
+        <input asp-for="Amount" class="form-control" />
+        <span asp-validation-for="Amount" class="text-danger"></span>
+    </div>
+    <div class="form-group mt-2">
+        <label asp-for="Description">Pershkrimi</label>
+        <input asp-for="Description" class="form-control" />
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    <div class="form-group mt-2">
+        <label asp-for="Date">Data</label>
+        <input asp-for="Date" class="form-control" />
+        <span asp-validation-for="Date" class="text-danger"></span>
+    </div>
+    <div class="form-group mt-2">
+        <label asp-for="PaidByUserId">Paguar nga</label>
+        <select asp-for="PaidByUserId" class="form-control" asp-items="@(ViewData["Users"] as SelectList)">
+        </select>
+        <span asp-validation-for="PaidByUserId" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">
+        @(Model.Id != 0 ? "Ruaj Ndryshimet" : "Shto Shpenzim")
+    </button>
+ </form>

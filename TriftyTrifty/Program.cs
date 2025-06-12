@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using TriftyTrifty.Data;
+using TriftyTrifty.DataAccess.Data;
 
 namespace TriftyTrifty
 {

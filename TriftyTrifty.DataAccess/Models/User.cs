@@ -1,4 +1,4 @@
-﻿namespace TriftyTrifty.Models
+﻿namespace TriftyTrifty.DataAccess.Models
 {
     public class User
     {

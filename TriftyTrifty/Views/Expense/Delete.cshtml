@@ -1,0 +1,14 @@
+﻿@model TriftyTrifty.DataAccess.Models.Expense
+
+<h2>Fshij Shpenzim</h2>
+
+<div class="alert alert-danger">
+    <p>A je i sigurt qe deshiron te fshish kete shpenzim?</p>
+    <p><strong>@Model.Description</strong> - @Model.Amount €</p>
+</div>
+
+<form asp-action="DeleteConfirmed" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Fshij</button>
+    <a asp-action="Index" class="btn btn-secondary">Anulo</a>
+</form>
