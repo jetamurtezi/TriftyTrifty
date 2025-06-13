@@ -27,7 +27,11 @@ namespace TriftyTrifty.Controllers
         public IActionResult Create() 
         {
             LoadUsersDropdown();
-            return View("CreateOrEdit", new Expense());
+            var expense = new Expense
+            {
+                Date = DateTime.Today
+            };
+            return View("CreateOrEdit", expense);
         }
 
         [HttpPost]
