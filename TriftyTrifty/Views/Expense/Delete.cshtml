@@ -1,14 +1,13 @@
 ﻿@model TriftyTrifty.DataAccess.Models.Expense
 
-<h2>Fshij Shpenzim</h2>
+<h2>A je i sigurt që dëshiron të fshish këtë shpenzim?</h2>
 
-<div class="alert alert-danger">
-    <p>A je i sigurt qe deshiron te fshish kete shpenzim?</p>
-    <p><strong>@Model.Description</strong> - @Model.Amount €</p>
+<div>
+    <strong>@Model.Description</strong> - @Model.Amount €
 </div>
 
 <form asp-action="DeleteConfirmed" method="post">
     <input type="hidden" asp-for="Id" />
-    <button type="submit" class="btn btn-danger">Fshij</button>
-    <a asp-action="Index" class="btn btn-secondary">Anulo</a>
+    <button type="submit" class="btn btn-danger mt-2">Fshij</button>
+    <a asp-action="ByGroup" asp-route-groupId="@Model.GroupId" class="btn btn-secondary mt-2">Anulo</a>
 </form>

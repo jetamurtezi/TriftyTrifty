@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using TriftyTrifty.DataAccess.Data;
 using TriftyTrifty.DataAccess.Repositories;
+using TriftyTrifty.DataAccess.Repositories.IRepositories;
 
 namespace TriftyTrifty
 {
@@ -14,6 +15,8 @@ namespace TriftyTrifty
             builder.Services.AddControllersWithViews();
             builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
             builder.Services.AddScoped<IExpenseRepository, ExpenseRepository>();
+            builder.Services.AddScoped<IExpenseGroupRepository, ExpenseGroupRepository>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
 
             var app = builder.Build();
 

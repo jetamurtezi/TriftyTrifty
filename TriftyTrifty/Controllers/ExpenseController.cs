@@ -5,51 +5,73 @@ using Microsoft.EntityFrameworkCore;
 using TriftyTrifty.DataAccess;
 using TriftyTrifty.DataAccess.Data;
 using TriftyTrifty.DataAccess.Models;
+using TriftyTrifty.DataAccess.Repositories;
+using TriftyTrifty.DataAccess.Repositories.IRepositories;
 
 namespace TriftyTrifty.Controllers
 {
     public class ExpenseController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IExpenseRepository _expenseRepo;
+        private readonly IUserRepository _userRepo;
+        private readonly IExpenseGroupRepository _groupRepo;
 
-        public ExpenseController(AppDbContext context)
+        public ExpenseController(IExpenseRepository expenseRepo, IUserRepository userRepo, IExpenseGroupRepository groupRepo)
         {
-            _context = context;
+            _expenseRepo = expenseRepo;
+            _userRepo = userRepo;
+            _groupRepo = groupRepo;
         }
         public IActionResult Index()
         {
-            var expenses=_context.Expenses
-                .Include(e => e.PaidByUser)
-                .OrderByDescending(e => e.Date)
-                .ToList();
+            var expenses = _expenseRepo.GetAllWithUserOrdered();
             return View(expenses);
         }
-        public IActionResult Create() 
+        public IActionResult Create(int groupId)
         {
             LoadUsersDropdown();
+
             var expense = new Expense
             {
+                GroupId = groupId,
                 Date = DateTime.Today
             };
+
             return View("CreateOrEdit", expense);
         }
+
 
         [HttpPost]
         public IActionResult Create(Expense expense)
         {
             if (ModelState.IsValid)
             {
-                _context.Expenses.Add(expense);
-                _context.SaveChanges();
+                _expenseRepo.Add(expense);
+                _expenseRepo.Save();
                 return RedirectToAction("Index");
             }
 
             LoadUsersDropdown(expense.PaidByUserId);
             return View("CreateOrEdit", expense);
         }
+
+        public IActionResult ByGroup(int groupId)
+        {
+            var group = _groupRepo.GetByIdWithExpenses(groupId);
+
+            if (group == null) { 
+                return NotFound();
+            }
+            ViewData["GroupId"] = group.Id;
+            ViewData["GroupName"] = group.GroupName;
+
+            return View(group.Expenses.ToList()); 
+        }
+
+
         public IActionResult Edit(int id)
         {
-            var expense = _context.Expenses.FirstOrDefault(e => e.Id == id);
+            var expense = _expenseRepo.GetById(id);
             if (expense == null)
             {
                 return NotFound();
@@ -66,21 +88,19 @@ namespace TriftyTrifty.Controllers
                 return View("CreateOrEdit", expense);
             }
             if (expense.Id == 0) {
-                _context.Expenses.Add(expense);
+                _expenseRepo.Add(expense);
             }
             else
             {
-                _context.Expenses.Update(expense);
+                _expenseRepo.Update(expense);
             }
-            _context.SaveChanges();
+            _expenseRepo.Save();
             return RedirectToAction("Index");
         }
 
         public IActionResult Delete(int id)
         {
-            var expense= _context.Expenses.
-                Include(e=> e.PaidByUser)
-                .FirstOrDefault(ex => ex.Id == id);
+            var expense = _expenseRepo.GetWithUser(id);
             if (expense == null) {
                 return NotFound();
             }
@@ -90,10 +110,10 @@ namespace TriftyTrifty.Controllers
         [HttpPost, ActionName("DeleteConfirmed")]
         public IActionResult DeleteConfirmed (int id)
         {
-            var expense=_context.Expenses.FirstOrDefault(e => e.Id == id);
+            var expense= _expenseRepo.GetById(id);
             if (expense!=null) {
-                _context.Expenses.Remove(expense);
-                _context.SaveChanges();
+                _expenseRepo.Delete(id);
+                _expenseRepo.Save();
             }
             return RedirectToAction("Index");
         }
@@ -101,7 +121,7 @@ namespace TriftyTrifty.Controllers
 
         private void LoadUsersDropdown(int? selectedUserId = null)
         {
-            var users = _context.Users.ToList();
+            var users = _userRepo.GetAll();
             ViewData["Users"] = new SelectList(users, "Id", "Name", selectedUserId);
         }
     }

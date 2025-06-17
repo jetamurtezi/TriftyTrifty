@@ -1,20 +1,22 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TriftyTrifty.DataAccess.Data;
 using TriftyTrifty.DataAccess.Models;
+using TriftyTrifty.DataAccess.Repositories;
+using TriftyTrifty.DataAccess.Repositories.IRepositories;
 
 namespace TriftyTrifty.Controllers
 {
     public class ExpenseGroupController : Controller
     {
-        private readonly AppDbContext _context;
+        private readonly IExpenseGroupRepository _groupRepository;
 
-        public ExpenseGroupController(AppDbContext context)
+        public ExpenseGroupController(IExpenseGroupRepository groupRepository)
         {
-            _context = context;
+            _groupRepository = groupRepository;
         }
         public IActionResult Index()
         {
-            var groups = _context.ExpenseGroups.ToList();
+            var groups = _groupRepository.GetAll();
             return View(groups);
         }
 
@@ -28,16 +30,17 @@ namespace TriftyTrifty.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.ExpenseGroups.Add(group);
-                _context.SaveChanges();
-                return RedirectToAction("Index");
+                _groupRepository.Add(group);
+                _groupRepository.Save();
+                return RedirectToAction("Index", "Home");
             }
+
             return View(group);
         }
 
         public IActionResult Delete(int id)
         {
-            var group = _context.ExpenseGroups.FirstOrDefault(e => e.Id == id);
+            var group = _groupRepository.GetById(id);
             if (group == null)
             {
                 return NotFound();
@@ -48,11 +51,11 @@ namespace TriftyTrifty.Controllers
         [HttpPost, ActionName("DeleteConfirmed")]
         public IActionResult DeleteConfirmed(int id)
         {
-            var group = _context.ExpenseGroups.FirstOrDefault(e => e.Id == id);
+            var group = _groupRepository.GetById(id);
             if (group != null)
             {
-                _context.ExpenseGroups.Remove(group);
-                _context.SaveChanges();
+                _groupRepository.Delete(id);
+                _groupRepository.Save();
             }
             return RedirectToAction("Index", "Home");
         }

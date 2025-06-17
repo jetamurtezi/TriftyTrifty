@@ -1,5 +1,6 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
+using TriftyTrifty.DataAccess.Data;
 using TriftyTrifty.Models;
 
 namespace TriftyTrifty.Controllers
@@ -8,14 +9,17 @@ namespace TriftyTrifty.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        private readonly AppDbContext _context;
+
+        public HomeController(AppDbContext context)
         {
-            _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
         {
-            return View();
+            var groups = _context.ExpenseGroups.ToList();
+            return View(groups);
         }
 
         public IActionResult Privacy()
