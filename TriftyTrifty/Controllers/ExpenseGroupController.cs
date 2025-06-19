@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using TriftyTrifty.DataAccess.Data;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using TriftyTrifty.DataAccess.Models;
-using TriftyTrifty.DataAccess.Repositories;
 using TriftyTrifty.DataAccess.Repositories.IRepositories;
 
 namespace TriftyTrifty.Controllers
 {
+    [Authorize] 
     public class ExpenseGroupController : Controller
     {
         private readonly IExpenseGroupRepository _groupRepository;
@@ -14,18 +14,21 @@ namespace TriftyTrifty.Controllers
         {
             _groupRepository = groupRepository;
         }
+
         public IActionResult Index()
         {
             var groups = _groupRepository.GetAll();
             return View(groups);
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View(new ExpenseGroup());
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public IActionResult Create(ExpenseGroup group)
         {
             if (ModelState.IsValid)
@@ -38,6 +41,7 @@ namespace TriftyTrifty.Controllers
             return View(group);
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete(int id)
         {
             var group = _groupRepository.GetById(id);
@@ -49,6 +53,7 @@ namespace TriftyTrifty.Controllers
         }
 
         [HttpPost, ActionName("DeleteConfirmed")]
+        [Authorize(Roles = "Admin")]
         public IActionResult DeleteConfirmed(int id)
         {
             var group = _groupRepository.GetById(id);

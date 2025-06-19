@@ -1,10 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
+
 
 namespace TriftyTrifty.DataAccess.Models
 {
-    public class User
+    public class AppUser : IdentityUser
     {
-        public int Id { get; set; }
         [Required]
         public string Name { get; set; }
 

@@ -18,15 +18,15 @@ namespace TriftyTrifty.DataAccess.Repositories
             _context = context;
         }
 
-        public IEnumerable<User> GetAll() => _context.Users.ToList();
+        public IEnumerable<AppUser> GetAll() => _context.Users.ToList();
 
-        public User GetById(int id) => _context.Users.FirstOrDefault(u => u.Id == id);
+        public AppUser GetById(string id) => _context.Users.FirstOrDefault(u => u.Id == id);
 
-        public void Add(User user) => _context.Users.Add(user);
+        public void Add(AppUser user) => _context.Users.Add(user);
 
-        public void Update(User user) => _context.Users.Update(user);
+        public void Update(AppUser user) => _context.Users.Update(user);
 
-        public void Delete(int id)
+        public void Delete(string id)
         {
             var user = GetById(id);
             if (user != null) _context.Users.Remove(user);

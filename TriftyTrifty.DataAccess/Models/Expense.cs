@@ -18,7 +18,7 @@ namespace TriftyTrifty.DataAccess.Models
         public int PaidByUserId { get; set; }
 
         [Required]
-        public User PaidByUser { get; set; }
+        public AppUser PaidByUser { get; set; }
 
         public int GroupId { get; set; }
         public ExpenseGroup Group { get; set; }
