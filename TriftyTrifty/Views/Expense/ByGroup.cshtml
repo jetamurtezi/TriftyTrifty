@@ -53,5 +53,12 @@ else
                 </tr>
             }
         </tbody>
+        <tfoot>
+            <tr>
+                <td><strong>Total:</strong></td>
+                <td><strong>@Model.Sum(e => e.Amount) €</strong></td>
+                <td colspan="3"></td>
+            </tr>
+        </tfoot>
     </table>
 }

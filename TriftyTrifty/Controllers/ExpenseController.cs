@@ -190,7 +190,7 @@ namespace TriftyTrifty.Controllers
             ViewData["GroupName"] = group.GroupName;
             ViewData["Transactions"] = transactions;
 
-            return View(); // View-i nuk ka nevojë për model të veçantë
+            return View(); 
         }
 
 
