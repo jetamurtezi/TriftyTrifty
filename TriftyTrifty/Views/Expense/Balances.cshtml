@@ -1,0 +1,21 @@
+﻿@{
+    ViewData["Title"] = "Balanca";
+    var transactions = ViewData["Transactions"] as List<string>;
+    var groupName = ViewData["GroupName"] as string;
+}
+
+<h2>Balanca për grupin @groupName</h2>
+
+@if (transactions == null || !transactions.Any())
+{
+    <p>Nuk ka pagesa për të balancuar.</p>
+}
+else
+{
+    <ul>
+        @foreach (var t in transactions)
+        {
+            <li>@t</li>
+        }
+    </ul>
+}

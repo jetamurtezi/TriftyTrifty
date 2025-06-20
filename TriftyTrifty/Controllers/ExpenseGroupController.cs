@@ -21,14 +21,14 @@ namespace TriftyTrifty.Controllers
             return View(groups);
         }
 
-        [Authorize(Roles = "Admin")]
+        
         public IActionResult Create()
         {
             return View(new ExpenseGroup());
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        
         public IActionResult Create(ExpenseGroup group)
         {
             if (ModelState.IsValid)
