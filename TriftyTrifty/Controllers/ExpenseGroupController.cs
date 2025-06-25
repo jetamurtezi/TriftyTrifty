@@ -2,22 +2,23 @@
 using Microsoft.AspNetCore.Mvc;
 using TriftyTrifty.DataAccess.Models;
 using TriftyTrifty.DataAccess.Repositories.IRepositories;
+using TriftyTrifty.Services.IServices;
 
 namespace TriftyTrifty.Controllers
 {
     [Authorize] 
     public class ExpenseGroupController : Controller
     {
-        private readonly IExpenseGroupRepository _groupRepository;
+        private readonly IExpenseGroupService _groupService;
 
-        public ExpenseGroupController(IExpenseGroupRepository groupRepository)
+        public ExpenseGroupController(IExpenseGroupService groupService)
         {
-            _groupRepository = groupRepository;
+            _groupService = groupService;
         }
 
         public IActionResult Index()
         {
-            var groups = _groupRepository.GetAll();
+            var groups = _groupService.GetAllExpenseGroups();
             return View(groups);
         }
 
@@ -33,8 +34,8 @@ namespace TriftyTrifty.Controllers
         {
             if (ModelState.IsValid)
             {
-                _groupRepository.Add(group);
-                _groupRepository.Save();
+                _groupService.AddExpenseGroup(group);
+                _groupService.Save();
                 return RedirectToAction("Index", "Home");
             }
 
@@ -44,7 +45,7 @@ namespace TriftyTrifty.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Delete(int id)
         {
-            var group = _groupRepository.GetById(id);
+            var group = _groupService.GetExpenseGroupById(id);
             if (group == null)
             {
                 return NotFound();
@@ -56,11 +57,11 @@ namespace TriftyTrifty.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult DeleteConfirmed(int id)
         {
-            var group = _groupRepository.GetById(id);
+            var group = _groupService.GetExpenseGroupById(id);
             if (group != null)
             {
-                _groupRepository.Delete(id);
-                _groupRepository.Save();
+                _groupService.DeleteExpenseGroup(id);
+                _groupService.Save();
             }
             return RedirectToAction("Index", "Home");
         }

@@ -4,6 +4,8 @@ using TriftyTrifty.DataAccess.Data;
 using TriftyTrifty.DataAccess.Models;
 using TriftyTrifty.DataAccess.Repositories;
 using TriftyTrifty.DataAccess.Repositories.IRepositories;
+using TriftyTrifty.Services;
+using TriftyTrifty.Services.IServices;
 
 namespace TriftyTrifty
 {
@@ -13,7 +15,7 @@ namespace TriftyTrifty
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // 1. Konfigurimi i DbContext dhe Identity
+            
             builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -27,10 +29,15 @@ namespace TriftyTrifty
                 opt.AccessDeniedPath = "/Identity/Account/AccessDenied";
             });
 
-            // 2. Shtimi i repositories
+            
             builder.Services.AddScoped<IExpenseRepository, ExpenseRepository>();
             builder.Services.AddScoped<IExpenseGroupRepository, ExpenseGroupRepository>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+            builder.Services.AddScoped<IBalanceService, BalanceService>();
+            builder.Services.AddScoped<IExpenseService, ExpenseService>();
+            builder.Services.AddScoped<IExpenseGroupService, ExpenseGroupService>();
+            builder.Services.AddScoped<IUserService, UserService>();
 
             builder.Services.AddControllersWithViews();
             builder.Services.AddRazorPages();

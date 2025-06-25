@@ -1,23 +1,24 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TriftyTrifty.DataAccess.Repositories.IRepositories;
 using TriftyTrifty.DataAccess.Models;
+using TriftyTrifty.DataAccess.Repositories.IRepositories;
+using TriftyTrifty.Services.IServices;
 
 namespace TriftyTrifty.Controllers
 {
     [Authorize(Roles = "Admin")] 
     public class UserController : Controller
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IUserService _userService;
 
-        public UserController(IUserRepository userRepository)
+        public UserController(IUserService userService)
         {
-            _userRepository = userRepository;
+            _userService = userService;
         }
 
         public IActionResult Index()
         {
-            var users = _userRepository.GetAll();
+            var users = _userService.GetAllUsers();
             return View(users); 
         }
 
@@ -31,8 +32,8 @@ namespace TriftyTrifty.Controllers
         {
             if (ModelState.IsValid)
             {
-                _userRepository.Add(user);
-                _userRepository.Save();
+                _userService.Add(user);
+                _userService.Save();
                 return RedirectToAction("Index");
             }
             return View(user);
@@ -40,7 +41,7 @@ namespace TriftyTrifty.Controllers
 
         public IActionResult Delete(string id)
         {
-            var user = _userRepository.GetById(id);
+            var user = _userService.GetUserById(id);
             if (user == null) return NotFound();
             return View(user);
         }
@@ -48,8 +49,8 @@ namespace TriftyTrifty.Controllers
         [HttpPost, ActionName("DeleteConfirmed")]
         public IActionResult DeleteConfirmed(string id)
         {
-            _userRepository.Delete(id);
-            _userRepository.Save();
+            _userService.Delete(id);
+            _userService.Save();
             return RedirectToAction("Index");
         }
     }
